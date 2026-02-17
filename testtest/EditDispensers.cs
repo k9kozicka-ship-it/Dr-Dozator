@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting; 
+using System.Windows.Forms.DataVisualization.Charting; // Required for Graphs
 using MySqlConnector;
 
 namespace testtest
@@ -28,20 +28,24 @@ namespace testtest
                 conn = new MySqlConnection(connectionString);
                 conn.Open();
 
-                
-                dtpStart.Value = DateTime.Now.Date;
-                dtpEnd.Value = DateTime.Now.Date.AddDays(1).AddSeconds(-1);
-
                 ConfigureGrid(dispensersGridView);
                 ConfigureGrid(usersGridView);
                 ConfigureGrid(statsGridView);
 
-                
+                // --- 1. Set Default Dates (Valid Range) ---
+                dtpStart.Value = DateTime.Now.Date; // Today at 00:00:00
+                dtpEnd.Value = DateTime.Now.Date.AddDays(1).AddSeconds(-1); // Today at 23:59:59
+
+                // --- 2. Subscribe to Events ---
                 dispensersGridView.CellClick += dispensersGridView_CellClick;
                 usersGridView.CellClick += usersGridView_CellClick;
 
-              
+                // Mask passwords
                 usersGridView.CellFormatting += usersGridView_CellFormatting;
+
+                // Subscribe to Date Validation Events
+                dtpStart.ValueChanged += ValidateDateRange;
+                dtpEnd.ValueChanged += ValidateDateRange;
 
                 LoadDispenserData();
                 LoadUserData();
@@ -54,6 +58,39 @@ namespace testtest
             }
         }
 
+        private void ValidateDateRange(object sender, EventArgs e)
+        {
+            // If Start Date is after End Date
+            if (dtpStart.Value > dtpEnd.Value)
+            {
+
+                KryptonMessageBox.Show("The Start Date cannot be after the End Date.",
+                                       "Invalid Date Range",
+                                       KryptonMessageBoxButtons.OK,
+                                       KryptonMessageBoxIcon.Error);
+
+                // infinite loop defence
+                dtpStart.ValueChanged -= ValidateDateRange;
+                dtpEnd.ValueChanged -= ValidateDateRange;
+
+                // Reset control to match the valid date
+                if (sender == dtpStart)
+                {
+                    // If user moved Start past End Start back to End
+                    dtpStart.Value = dtpEnd.Value.Date;
+                }
+                else
+                {
+                    // If user moved End before Start End forward to Start
+                    dtpEnd.Value = dtpStart.Value.Date.AddDays(1).AddSeconds(-1);
+                }
+
+
+                dtpStart.ValueChanged += ValidateDateRange;
+                dtpEnd.ValueChanged += ValidateDateRange;
+            }
+        }
+
         private void ConfigureGrid(KryptonDataGridView dgv)
         {
             if (dgv == null) return;
@@ -63,27 +100,14 @@ namespace testtest
             dgv.AllowUserToAddRows = false;
         }
 
- 
-        // PASSWORD MASKING
-      
-        private void usersGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-          
-            if (usersGridView.Columns[e.ColumnIndex].Name == "Password" && e.Value != null)
+            if (tabControl1.SelectedIndex == 2)
             {
-                
-                e.Value = new string('*', e.Value.ToString().Length);
-                e.FormattingApplied = true;
+                LoadStatistics();
             }
         }
 
-        // TAB (STATISTICS)
-      
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl1.SelectedIndex == 2) LoadStatistics();
-        }
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
@@ -94,6 +118,7 @@ namespace testtest
         {
             try
             {
+                // LEGIT FILTERING LOGIC:
                 string query = @"
                     SELECT 
                         s.Id as 'ID', 
@@ -111,15 +136,23 @@ namespace testtest
                 DataTable statsTable = new DataTable();
                 adapter.Fill(statsTable);
 
-                if (statsGridView != null) statsGridView.DataSource = statsTable;
+                if (statsGridView != null)
+                {
+                    statsGridView.DataSource = statsTable;
+                }
+
                 UpdateChart(statsTable);
             }
-            catch (Exception ex) { MessageBox.Show("Stats error: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not load statistics: " + ex.Message);
+            }
         }
 
         private void UpdateChart(DataTable dt)
         {
             if (usageChart == null) return;
+
             Color customBgColor = ColorTranslator.FromHtml("#636C87");
             usageChart.Series.Clear();
             usageChart.Titles.Clear();
@@ -127,17 +160,26 @@ namespace testtest
             usageChart.BackColor = customBgColor;
             usageChart.ChartAreas[0].BackColor = customBgColor;
 
-            var title = usageChart.Titles.Add($"Usage History");
+            var title = usageChart.Titles.Add($"Usage from {dtpStart.Value:dd/MM} to {dtpEnd.Value:dd/MM}");
             title.ForeColor = Color.White;
             title.Font = new Font("Segoe UI", 12, FontStyle.Bold);
 
+
             ChartArea area = usageChart.ChartAreas[0];
             area.AxisX.LabelStyle.ForeColor = Color.White;
-            area.AxisY.LabelStyle.ForeColor = Color.White;
             area.AxisX.LineColor = Color.White;
+            area.AxisX.MajorGrid.LineColor = Color.FromArgb(70, Color.White);
+            area.AxisY.LabelStyle.ForeColor = Color.White;
             area.AxisY.LineColor = Color.White;
+            area.AxisY.MajorGrid.LineColor = Color.FromArgb(70, Color.White);
 
-            Series series = new Series("Usage") { ChartType = SeriesChartType.Column, XValueMember = "ID", YValueMembers = "TotalUses", IsValueShownAsLabel = true };
+            Series series = new Series("Usage")
+            {
+                ChartType = SeriesChartType.Column,
+                XValueMember = "ID",
+                YValueMembers = "TotalUses",
+                IsValueShownAsLabel = true
+            };
             series.LabelForeColor = Color.White;
             series.Palette = ChartColorPalette.BrightPastel;
 
@@ -146,9 +188,9 @@ namespace testtest
             usageChart.DataBind();
         }
 
-  
+        // ==========================================
         // DISPENSER MANAGEMENT
-    
+        // ==========================================
 
         private void LoadDispenserData()
         {
@@ -184,6 +226,7 @@ namespace testtest
         private void kryptonButton3_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxId.Text)) return;
+            // Clean logs first to maintain ID integrity
             ExecuteSecure("DELETE FROM usage_logs WHERE dispenser_id = @id", new MySqlParameter("@id", textBoxId.Text));
             ExecuteSecure("DELETE FROM sapunerki WHERE Id = @id", new MySqlParameter("@id", textBoxId.Text));
             LoadDispenserData();
@@ -209,9 +252,9 @@ namespace testtest
             }
         }
 
-   
+        // ==========================================
         // USER MANAGEMENT
-     
+        // ==========================================
 
         private void LoadUserData()
         {
@@ -266,6 +309,19 @@ namespace testtest
             }
         }
 
+        private void usersGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && usersGridView.Columns[e.ColumnIndex].Name == "Password" && e.Value != null)
+            {
+                e.Value = new string('●', e.Value.ToString().Length);
+                e.FormattingApplied = true;
+            }
+        }
+
+        // ==========================================
+        // HELPERS & STUBS
+        // ==========================================
+
         private void ExecuteSecure(string sql, params MySqlParameter[] p)
         {
             try
@@ -300,7 +356,12 @@ namespace testtest
         private void kryptonTextBox1_TextChanged(object sender, EventArgs e) { }
         private void kryptonLabel4_Click(object sender, EventArgs e) { }
         private void kryptonLabel8_Click(object sender, EventArgs e) { }
-        private void kryptonButton1_Click(object sender, EventArgs e) { LoadStatistics(); }
+
+        // This triggers if you didn't rename the button in the designer
+        private void kryptonButton1_Click(object sender, EventArgs e)
+        {
+            LoadStatistics();
+        }
 
         private void EditDatabase_FormClosing(object sender, FormClosingEventArgs e)
         {

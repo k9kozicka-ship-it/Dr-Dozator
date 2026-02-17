@@ -123,23 +123,14 @@ namespace testtest
 
         private void RemoveControl(string name)
         {
-            if (mainPanel.Controls.ContainsKey(name))
-            { 
-                var c = mainPanel.Controls[name]; mainPanel.Controls.Remove(c); c.Dispose();
-            }
+            if (mainPanel.Controls.ContainsKey(name)) { var c = mainPanel.Controls[name]; mainPanel.Controls.Remove(c); c.Dispose(); }
         }
 
         // Placeholder for the Paint error
         private void mainPanel_Paint(object sender, PaintEventArgs e) { }
 
-        protected override Point ScrollToControl(Control activeControl) 
-        { 
-            return this.AutoScrollPosition;
-        }
-        private void btnManageDatabase_Click_1(object sender, EventArgs e)
-        { 
-            refreshTimer.Stop(); new EditDispensers().ShowDialog(); refreshTimer.Start();
-        }
+        protected override Point ScrollToControl(Control activeControl) { return this.AutoScrollPosition; }
+        private void btnManageDatabase_Click_1(object sender, EventArgs e) { refreshTimer.Stop(); new EditDispensers().ShowDialog(); refreshTimer.Start(); }
         private void btnLogout_Click(object sender, EventArgs e) { this.Close(); }
     }
 }

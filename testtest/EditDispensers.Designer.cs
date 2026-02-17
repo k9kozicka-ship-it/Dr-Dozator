@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditDispensers));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDispensers = new System.Windows.Forms.TabPage();
@@ -424,15 +424,15 @@
             // 
             this.usageChart.BackColor = System.Drawing.Color.GhostWhite;
             this.usageChart.BorderlineColor = System.Drawing.Color.RoyalBlue;
-            chartArea1.Name = "ChartArea1";
-            this.usageChart.ChartAreas.Add(chartArea1);
+            chartArea2.Name = "ChartArea1";
+            this.usageChart.ChartAreas.Add(chartArea2);
             this.usageChart.Dock = System.Windows.Forms.DockStyle.Left;
             this.usageChart.Location = new System.Drawing.Point(3, 3);
             this.usageChart.Name = "usageChart";
-            series1.ChartArea = "ChartArea1";
-            series1.Name = "Series1";
-            this.usageChart.Series.Add(series1);
-            this.usageChart.Size = new System.Drawing.Size(658, 311);
+            series2.ChartArea = "ChartArea1";
+            series2.Name = "Series1";
+            this.usageChart.Series.Add(series2);
+            this.usageChart.Size = new System.Drawing.Size(616, 311);
             this.usageChart.TabIndex = 1;
             this.usageChart.Text = "chart1";
             // 
@@ -462,7 +462,7 @@
             // 
             // btnFilter
             // 
-            this.btnFilter.Location = new System.Drawing.Point(143, 152);
+            this.btnFilter.Location = new System.Drawing.Point(164, 147);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.Size = new System.Drawing.Size(142, 38);
             this.btnFilter.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -474,7 +474,7 @@
             // dtpStart
             // 
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStart.Location = new System.Drawing.Point(203, 48);
+            this.dtpStart.Location = new System.Drawing.Point(224, 43);
             this.dtpStart.Name = "dtpStart";
             this.dtpStart.Size = new System.Drawing.Size(121, 27);
             this.dtpStart.StateCommon.Content.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -483,7 +483,7 @@
             // kryptonLabel7
             // 
             this.kryptonLabel7.AutoSize = false;
-            this.kryptonLabel7.Location = new System.Drawing.Point(94, 48);
+            this.kryptonLabel7.Location = new System.Drawing.Point(115, 43);
             this.kryptonLabel7.Name = "kryptonLabel7";
             this.kryptonLabel7.Size = new System.Drawing.Size(120, 25);
             this.kryptonLabel7.StateCommon.ShortText.Color2 = System.Drawing.Color.Transparent;
@@ -494,7 +494,7 @@
             // dtpEnd
             // 
             this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEnd.Location = new System.Drawing.Point(203, 91);
+            this.dtpEnd.Location = new System.Drawing.Point(224, 86);
             this.dtpEnd.Name = "dtpEnd";
             this.dtpEnd.Size = new System.Drawing.Size(121, 27);
             this.dtpEnd.StateCommon.Content.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -503,7 +503,7 @@
             // kryptonLabel8
             // 
             this.kryptonLabel8.AutoSize = false;
-            this.kryptonLabel8.Location = new System.Drawing.Point(99, 91);
+            this.kryptonLabel8.Location = new System.Drawing.Point(120, 86);
             this.kryptonLabel8.Name = "kryptonLabel8";
             this.kryptonLabel8.Size = new System.Drawing.Size(115, 25);
             this.kryptonLabel8.StateCommon.ShortText.Color2 = System.Drawing.Color.Transparent;
@@ -520,8 +520,7 @@
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EditDispensers";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Edit Dispensers";
+            this.Text = "EditDispensers";
             this.Load += new System.EventHandler(this.EditDispensers_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabDispensers.ResumeLayout(false);

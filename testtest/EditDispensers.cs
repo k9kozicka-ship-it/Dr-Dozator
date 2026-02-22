@@ -122,7 +122,7 @@ namespace testtest
                 string query = @"
                     SELECT 
                         s.Id as 'ID', 
-                        COUNT(l.id) as 'TotalUses'
+                        COUNT(l.id) as 'Total Uses'
                     FROM sapunerki s
                     LEFT JOIN usage_logs l ON s.Id = l.dispenser_id 
                         AND l.timestamp BETWEEN @start AND @end
@@ -177,7 +177,7 @@ namespace testtest
             {
                 ChartType = SeriesChartType.Column,
                 XValueMember = "ID",
-                YValueMembers = "TotalUses",
+                YValueMembers = "Total Uses",
                 IsValueShownAsLabel = true
             };
             series.LabelForeColor = Color.White;
@@ -197,7 +197,7 @@ namespace testtest
             try
             {
                 DataTable dt = new DataTable();
-                new MySqlDataAdapter("SELECT Id, User, Distance, Floor FROM sapunerki", conn).Fill(dt);
+                new MySqlDataAdapter("SELECT Id, User, Floor FROM sapunerki", conn).Fill(dt);
                 dispensersGridView.DataSource = dt;
             }
             catch { }
@@ -206,7 +206,7 @@ namespace testtest
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (comboBoxUser.SelectedValue == null) return;
-            ExecuteSecure("INSERT INTO sapunerki (User, Distance, Floor) VALUES (@u, 6, @f)",
+            ExecuteSecure("INSERT INTO sapunerki (User, 6, Floor) VALUES (@u, @f)",
                 new MySqlParameter("@u", comboBoxUser.SelectedValue),
                 new MySqlParameter("@f", comboBoxFloor.SelectedValue));
             LoadDispenserData();

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditDispensers));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabDispensers = new System.Windows.Forms.TabPage();
@@ -424,14 +424,14 @@
             // 
             this.usageChart.BackColor = System.Drawing.Color.GhostWhite;
             this.usageChart.BorderlineColor = System.Drawing.Color.RoyalBlue;
-            chartArea2.Name = "ChartArea1";
-            this.usageChart.ChartAreas.Add(chartArea2);
+            chartArea1.Name = "ChartArea1";
+            this.usageChart.ChartAreas.Add(chartArea1);
             this.usageChart.Dock = System.Windows.Forms.DockStyle.Left;
             this.usageChart.Location = new System.Drawing.Point(3, 3);
             this.usageChart.Name = "usageChart";
-            series2.ChartArea = "ChartArea1";
-            series2.Name = "Series1";
-            this.usageChart.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Name = "Series1";
+            this.usageChart.Series.Add(series1);
             this.usageChart.Size = new System.Drawing.Size(616, 311);
             this.usageChart.TabIndex = 1;
             this.usageChart.Text = "chart1";
@@ -520,7 +520,7 @@
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EditDispensers";
-            this.Text = "EditDispensers";
+            this.Text = "Edit Dispensers";
             this.Load += new System.EventHandler(this.EditDispensers_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabDispensers.ResumeLayout(false);

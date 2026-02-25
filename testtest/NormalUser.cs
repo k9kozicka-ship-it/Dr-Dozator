@@ -89,7 +89,7 @@ namespace testtest
             catch { }
         }
 
-        // Placeholder for the Click error
+        
         private void kryptonLabel2_Click(object sender, EventArgs e) { }
 
         protected override Point ScrollToControl(Control activeControl) { return this.AutoScrollPosition; }

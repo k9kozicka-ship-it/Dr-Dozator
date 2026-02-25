@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting; // Required for Graphs
+using System.Windows.Forms.DataVisualization.Charting; //for graphs
 using MySqlConnector;
 
 namespace testtest
@@ -32,18 +32,18 @@ namespace testtest
                 ConfigureGrid(usersGridView);
                 ConfigureGrid(statsGridView);
 
-                // --- 1. Set Default Dates (Valid Range) ---
-                dtpStart.Value = DateTime.Now.Date; // Today at 00:00:00
-                dtpEnd.Value = DateTime.Now.Date.AddDays(1).AddSeconds(-1); // Today at 23:59:59
+                
+                dtpStart.Value = DateTime.Now.Date; //00:00:00
+                dtpEnd.Value = DateTime.Now.Date.AddDays(1).AddSeconds(-1); //23:59:59
 
-                // --- 2. Subscribe to Events ---
+                
                 dispensersGridView.CellClick += dispensersGridView_CellClick;
                 usersGridView.CellClick += usersGridView_CellClick;
 
                 // Mask passwords
                 usersGridView.CellFormatting += usersGridView_CellFormatting;
 
-                // Subscribe to Date Validation Events
+                
                 dtpStart.ValueChanged += ValidateDateRange;
                 dtpEnd.ValueChanged += ValidateDateRange;
 
@@ -69,19 +69,19 @@ namespace testtest
                                        KryptonMessageBoxButtons.OK,
                                        KryptonMessageBoxIcon.Error);
 
-                // infinite loop defence
+                // infinite loop def
                 dtpStart.ValueChanged -= ValidateDateRange;
                 dtpEnd.ValueChanged -= ValidateDateRange;
 
-                // Reset control to match the valid date
+                // Reset control to match valid date
                 if (sender == dtpStart)
                 {
-                    // If user moved Start past End Start back to End
+                    // If user moved start past end move start back to End
                     dtpStart.Value = dtpEnd.Value.Date;
                 }
                 else
                 {
-                    // If user moved End before Start End forward to Start
+                    // If user moved end before start end moved to Start
                     dtpEnd.Value = dtpStart.Value.Date.AddDays(1).AddSeconds(-1);
                 }
 
@@ -118,7 +118,6 @@ namespace testtest
         {
             try
             {
-                // LEGIT FILTERING LOGIC:
                 string query = @"
                     SELECT 
                         s.Id as 'ID', 
@@ -305,7 +304,7 @@ namespace testtest
                 DataGridViewRow row = usersGridView.Rows[e.RowIndex];
                 textboxUsername.Text = row.Cells["Username"].Value.ToString();
                 textBoxPassword.Text = row.Cells["Password"].Value.ToString();
-                textBoxPriority.Text = row.Cells["Priority"].Value.ToString();
+                textBoxPriority.Text = row.Cells["Floor"].Value.ToString();
             }
         }
 
@@ -345,7 +344,7 @@ namespace testtest
 
                 DataTable f = new DataTable();
                 new MySqlDataAdapter("SELECT DISTINCT Priority FROM users", conn).Fill(f);
-                comboBoxFloor.DataSource = f; comboBoxFloor.DisplayMember = "Priority"; comboBoxFloor.ValueMember = "Priority";
+                comboBoxFloor.DataSource = f; comboBoxFloor.DisplayMember = "Floor"; comboBoxFloor.ValueMember = "Floor";
 
                 comboBoxUser.SelectedIndex = -1; comboBoxFloor.SelectedIndex = -1;
             }

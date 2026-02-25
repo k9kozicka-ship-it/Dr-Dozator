@@ -61,18 +61,20 @@ namespace testtest
                     Admin admin = new Admin();
                     admin.ShowDialog();
                 }
-                else if (priority >= 1 && priority <= 3)
+                else
                 {
-                    NormalUser form = new NormalUser();
-                    form.SetLBLName(username);
-                    form.SetFloorLBL(priority);
-                    form.ShowDialog();
+                    //NormalUser form = new NormalUser();
+                    //form.SetLBLName(username);
+                    //form.SetFloorLBL(priority);
+                    //form.ShowDialog();
+                    MessageBox.Show("Please enter valid username and password.");
+                    return;
                 }
 
 
                 kryptonTextBox1.Text = string.Empty;
                 kryptonTextBox2.Text = string.Empty;
-                this.Show(); // Re-show Login form for the next user
+                this.Show(); // Re-show Login form when closing the dashboard
             }
             catch (MySqlException ex)
             {

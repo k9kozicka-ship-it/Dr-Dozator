@@ -26,7 +26,7 @@ namespace testtest
         private string telegramBotToken = "8691791019:AAFYJju1f0LbXhtEkbkKFAhDqpNbL-iu09c";
 
         //if its a GC it should have a - sign
-        private string telegramChatId = "-4792746372";
+        private string telegramChatId = "-1003854751985";
 
         public Admin()
         {
